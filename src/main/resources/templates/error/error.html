@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Erro')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/base :: navbar}"></nav>
+
+<main class="container my-5 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card border-0 shadow-sm p-5">
+                <i class="bi bi-exclamation-triangle-fill fs-1 text-danger mb-3"></i>
+                <h1 class="h3 fw-bold" th:text="${titulo} ?: 'Erro'"></h1>
+                <p class="text-muted" th:text="${mensagem} ?: 'Ocorreu um erro inesperado.'"></p>
+
+                <!-- Lista de erros de validação -->
+                <ul th:if="${erros}" class="list-group text-start mb-3">
+                    <li th:each="erro : ${erros}"
+                        class="list-group-item list-group-item-danger">
+                        <i class="bi bi-x-circle me-2"></i>
+                        <span th:text="${erro}"></span>
+                    </li>
+                </ul>
+
+                <div class="d-flex gap-2 justify-content-center mt-3">
+                    <a th:href="@{/dashboard}" class="btn btn-primary">
+                        <i class="bi bi-house me-1"></i>Ir para o Dashboard
+                    </a>
+                    <button onclick="history.back()" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Voltar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout/base :: footer}"></footer>
+<script th:replace="~{layout/base :: scripts}"></script>
+</body>
+</html>

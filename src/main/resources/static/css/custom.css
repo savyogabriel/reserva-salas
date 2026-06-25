@@ -1,0 +1,142 @@
+/* ============================================================
+   Sistema de Reserva de Salas — custom.css
+   Bootstrap 5 customizations & utility classes
+   ============================================================ */
+
+/* ── Tipografia ────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --color-primary: #2563eb;
+    --color-success: #16a34a;
+    --color-warning: #d97706;
+    --color-danger:  #dc2626;
+    --shadow-card:   0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+    --radius-card:   .75rem;
+}
+
+body {
+    font-family: var(--font-main);
+    font-size: .925rem;
+}
+
+/* ── Cards ─────────────────────────────────────────────────── */
+.card {
+    border-radius: var(--radius-card) !important;
+    box-shadow: var(--shadow-card) !important;
+}
+
+/* Hover sutil nos cards de estatística */
+.card-stat {
+    transition: transform .2s ease, box-shadow .2s ease;
+    cursor: default;
+}
+
+.card-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0,0,0,.1) !important;
+}
+
+/* Ícone de estatística */
+.stat-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+.navbar {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+    letter-spacing: -.02em;
+}
+
+/* ── Tabelas ─────────────────────────────────────────────────── */
+.table > :not(caption) > * > * {
+    padding: .75rem 1rem;
+}
+
+.table thead th {
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+/* ── Badges ─────────────────────────────────────────────────── */
+.badge {
+    font-weight: 500;
+    font-size: .75rem;
+    padding: .35em .65em;
+}
+
+/* ── Botões ─────────────────────────────────────────────────── */
+.btn {
+    font-weight: 500;
+    border-radius: .5rem;
+    transition: transform .1s, box-shadow .1s;
+}
+
+.btn:active {
+    transform: scale(.97);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+/* ── Formulários ─────────────────────────────────────────────── */
+.form-control,
+.form-select {
+    border-radius: .5rem;
+    border-color: #d1d5db;
+    padding: .5rem .75rem;
+    font-size: .925rem;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
+/* ── Login ─────────────────────────────────────────────────── */
+.login-logo i {
+    filter: drop-shadow(0 4px 8px rgba(37,99,235,.25));
+}
+
+/* ── Cards de reserva (aprovação) ────────────────────────────── */
+.reserva-card {
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.reserva-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0,0,0,.12) !important;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+    font-size: .85rem;
+}
+
+/* ── Alertas flash ───────────────────────────────────────────── */
+.alert {
+    border-radius: .6rem;
+    border: none;
+}
+
+/* ── Scroll suave ────────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Aprovação de Reservas')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/base :: navbar}"></nav>
+<div th:replace="~{layout/base :: alerts}"></div>
+
+<main class="container my-4 flex-grow-1">
+
+    <div class="d-flex align-items-center mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-0">
+                <i class="bi bi-clipboard2-check me-2 text-warning"></i>Aprovação de Reservas
+            </h1>
+            <p class="text-muted mb-0">Reservas pendentes aguardando sua análise</p>
+        </div>
+        <span class="ms-auto badge bg-warning text-dark fs-6"
+              th:text="${reservas.size()} + ' pendente(s)'"></span>
+    </div>
+
+    <!-- Estado vazio -->
+    <div th:if="${reservas.empty}" class="card border-0 shadow-sm text-center py-5">
+        <div class="card-body">
+            <i class="bi bi-check2-all fs-1 text-success mb-3 d-block"></i>
+            <h5 class="fw-semibold">Nenhuma reserva pendente!</h5>
+            <p class="text-muted">Todas as solicitações foram processadas.</p>
+            <a th:href="@{/dashboard}" class="btn btn-outline-primary">Voltar ao Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Cards de reservas pendentes -->
+    <div th:unless="${reservas.empty}" class="row g-3">
+        <div class="col-md-6 col-xl-4" th:each="reserva : ${reservas}">
+            <div class="card border-0 shadow-sm h-100 reserva-card">
+                <div class="card-header bg-warning-subtle border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold" th:text="${reserva.sala.nome}"></span>
+                        <span class="badge bg-warning text-dark">Pendente</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-person me-2 text-muted"></i>
+                            <strong th:text="${reserva.nomeUsuario}"></strong>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-calendar3 me-2 text-muted"></i>
+                            <span th:text="${#temporals.format(reserva.data, 'dd/MM/yyyy')}"></span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-clock me-2 text-muted"></i>
+                            <span th:text="${#temporals.format(reserva.horaInicio, 'HH:mm')}"></span>
+                            —
+                            <span th:text="${#temporals.format(reserva.horaFim, 'HH:mm')}"></span>
+                        </li>
+                        <li class="text-muted small">
+                            <i class="bi bi-calendar-plus me-2"></i>
+                            Solicitada em
+                            <span th:text="${#temporals.format(reserva.dataCriacao, 'dd/MM/yyyy HH:mm')}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer bg-transparent border-0 d-flex gap-2 pb-3">
+                    <!-- Aprovar -->
+                    <form th:action="@{/reservas/{id}/aprovar(id=${reserva.id})}" method="post" class="flex-grow-1">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-lg me-1"></i>Aprovar
+                        </button>
+                    </form>
+                    <!-- Rejeitar -->
+                    <form th:action="@{/reservas/{id}/rejeitar(id=${reserva.id})}" method="post" class="flex-grow-1"
+                          onsubmit="return confirm('Rejeitar esta reserva?')">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-x-lg me-1"></i>Rejeitar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{layout/base :: footer}"></footer>
+<script th:replace="~{layout/base :: scripts}"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/base :: head('Salas')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/base :: navbar}"></nav>
+<div th:replace="~{layout/base :: alerts}"></div>
+
+<main class="container my-4 flex-grow-1">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-0"><i class="bi bi-door-open me-2 text-primary"></i>Salas</h1>
+            <p class="text-muted mb-0">Gerenciamento de salas de estudo</p>
+        </div>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/salas/cadastrar}"
+           class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>Nova Sala
+        </a>
+    </div>
+
+    <!-- Tabela -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col" class="text-center">Capacidade</th>
+                            <th scope="col" class="text-center">Status</th>
+                            <th sec:authorize="hasRole('ADMIN')" scope="col" class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${salas.empty}">
+                            <td colspan="5" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                Nenhuma sala cadastrada ainda.
+                            </td>
+                        </tr>
+                        <tr th:each="sala : ${salas}" th:classappend="${!sala.ativa} ? 'table-secondary' : ''">
+                            <td class="text-muted small" th:text="${sala.id}"></td>
+                            <td>
+                                <span class="fw-semibold" th:text="${sala.nome}"></span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-secondary rounded-pill">
+                                    <i class="bi bi-people me-1"></i>
+                                    <span th:text="${sala.capacidade}"></span>
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span th:if="${sala.ativa}" class="badge bg-success">
+                                    <i class="bi bi-check-circle me-1"></i>Ativa
+                                </span>
+                                <span th:unless="${sala.ativa}" class="badge bg-secondary">
+                                    <i class="bi bi-x-circle me-1"></i>Inativa
+                                </span>
+                            </td>
+                            <td sec:authorize="hasRole('ADMIN')" class="text-center">
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <a th:href="@{/salas/{id}/editar(id=${sala.id})}"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil me-1"></i>Editar
+                                    </a>
+                                    <!-- Inativar (apenas se ativa) -->
+                                    <form th:if="${sala.ativa}"
+                                          th:action="@{/salas/{id}/inativar(id=${sala.id})}"
+                                          method="post"
+                                          onsubmit="return confirm('Inativar a sala \'' + /*[[${sala.nome}]]*/ '' + '\'?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-slash-circle me-1"></i>Inativar
+                                        </button>
+                                    </form>
+                                    <!-- Reativar (apenas se inativa) -->
+                                    <form th:unless="${sala.ativa}"
+                                          th:action="@{/salas/{id}/reativar(id=${sala.id})}"
+                                          method="post">
+                                        <button type="submit" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-arrow-counterclockwise me-1"></i>Reativar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{layout/base :: footer}"></footer>
+<script th:replace="~{layout/base :: scripts}"></script>
+</body>
+</html>

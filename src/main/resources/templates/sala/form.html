@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head(${modoEdicao} ? 'Editar Sala' : 'Nova Sala')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/base :: navbar}"></nav>
+<div th:replace="~{layout/base :: alerts}"></div>
+
+<main class="container my-4 flex-grow-1">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="d-flex align-items-center mb-4">
+                <a th:href="@{/salas}" class="btn btn-outline-secondary btn-sm me-3">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <div>
+                    <h1 class="h3 fw-bold mb-0"
+                        th:text="${modoEdicao} ? 'Editar Sala' : 'Cadastrar Sala'"></h1>
+                    <p class="text-muted mb-0"
+                       th:text="${modoEdicao} ? 'Atualize os dados da sala' : 'Preencha os dados da nova sala'"></p>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+
+                    <form th:action="${modoEdicao} ? @{/salas/{id}/editar(id=${salaDTO.id})} : @{/salas/cadastrar}"
+                          th:object="${salaDTO}"
+                          method="post"
+                          novalidate>
+
+                        <!-- Nome da Sala -->
+                        <div class="mb-3">
+                            <label for="nome" class="form-label fw-semibold">
+                                <i class="bi bi-tag me-1"></i>Nome da Sala
+                            </label>
+                            <input type="text"
+                                   id="nome"
+                                   th:field="*{nome}"
+                                   th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid' : ''"
+                                   class="form-control"
+                                   placeholder="Ex: Sala 101 — Laboratório"
+                                   maxlength="100"/>
+                            <div class="invalid-feedback" th:errors="*{nome}"></div>
+                        </div>
+
+                        <!-- Capacidade -->
+                        <div class="mb-4">
+                            <label for="capacidade" class="form-label fw-semibold">
+                                <i class="bi bi-people me-1"></i>Capacidade (pessoas)
+                            </label>
+                            <input type="number"
+                                   id="capacidade"
+                                   th:field="*{capacidade}"
+                                   th:classappend="${#fields.hasErrors('capacidade')} ? 'is-invalid' : ''"
+                                   class="form-control"
+                                   min="1"
+                                   placeholder="Ex: 20"/>
+                            <div class="invalid-feedback" th:errors="*{capacidade}"></div>
+                        </div>
+
+                        <!-- Botões -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1">
+                                <i th:class="${modoEdicao} ? 'bi bi-save me-1' : 'bi bi-plus-lg me-1'"></i>
+                                <span th:text="${modoEdicao} ? 'Salvar Alterações' : 'Cadastrar Sala'"></span>
+                            </button>
+                            <a th:href="@{/salas}" class="btn btn-outline-secondary">
+                                Cancelar
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{layout/base :: footer}"></footer>
+<script th:replace="~{layout/base :: scripts}"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Solicitar Reserva')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/base :: navbar}"></nav>
+<div th:replace="~{layout/base :: alerts}"></div>
+
+<main class="container my-4 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="d-flex align-items-center mb-4">
+                <a th:href="@{/reservas}" class="btn btn-outline-secondary btn-sm me-3">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <div>
+                    <h1 class="h3 fw-bold mb-0">Solicitar Reserva</h1>
+                    <p class="text-muted mb-0">Reserve uma sala de estudo</p>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form th:action="@{/reservas/solicitar}"
+                          th:object="${reservaDTO}"
+                          method="post"
+                          novalidate>
+
+                        <!-- Sala -->
+                        <div class="mb-3">
+                            <label for="salaId" class="form-label fw-semibold">
+                                <i class="bi bi-door-open me-1"></i>Sala
+                            </label>
+                            <select id="salaId"
+                                    th:field="*{salaId}"
+                                    th:classappend="${#fields.hasErrors('salaId')} ? 'is-invalid' : ''"
+                                    class="form-select">
+                                <option value="">— Selecione uma sala —</option>
+                                <option th:each="sala : ${salas}"
+                                        th:value="${sala.id}"
+                                        th:text="${sala.nome} + ' (cap. ' + ${sala.capacidade} + ')'">
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" th:errors="*{salaId}"></div>
+                        </div>
+
+                        <!-- Data -->
+                        <div class="mb-3">
+                            <label for="data" class="form-label fw-semibold">
+                                <i class="bi bi-calendar3 me-1"></i>Data
+                            </label>
+                            <input type="date"
+                                   id="data"
+                                   th:field="*{data}"
+                                   th:classappend="${#fields.hasErrors('data')} ? 'is-invalid' : ''"
+                                   class="form-control"/>
+                            <div class="invalid-feedback" th:errors="*{data}"></div>
+                        </div>
+
+                        <!-- Hora Início / Hora Fim -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <label for="horaInicio" class="form-label fw-semibold">
+                                    <i class="bi bi-clock me-1"></i>Hora Início
+                                </label>
+                                <input type="time"
+                                       id="horaInicio"
+                                       th:field="*{horaInicio}"
+                                       th:classappend="${#fields.hasErrors('horaInicio')} ? 'is-invalid' : ''"
+                                       class="form-control"/>
+                                <div class="invalid-feedback" th:errors="*{horaInicio}"></div>
+                            </div>
+                            <div class="col-6">
+                                <label for="horaFim" class="form-label fw-semibold">
+                                    <i class="bi bi-clock-fill me-1"></i>Hora Fim
+                                </label>
+                                <input type="time"
+                                       id="horaFim"
+                                       th:field="*{horaFim}"
+                                       th:classappend="${#fields.hasErrors('horaFim')} ? 'is-invalid' : ''"
+                                       class="form-control"/>
+                                <div class="invalid-feedback" th:errors="*{horaFim}"></div>
+                            </div>
+                        </div>
+
+                        <!-- Info: reserva inicia PENDENTE -->
+                        <div class="alert alert-info py-2 mb-4">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Sua reserva ficará <strong>Pendente</strong> até ser aprovada pelo administrador.
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1">
+                                <i class="bi bi-send me-1"></i>Solicitar Reserva
+                            </button>
+                            <a th:href="@{/reservas}" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout/base :: footer}"></footer>
+<script th:replace="~{layout/base :: scripts}"></script>
+</body>
+</html>

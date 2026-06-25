@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head('Meu Perfil')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/base :: navbar}"></nav>
+<div th:replace="~{layout/base :: alerts}"></div>
+
+<!-- Alerta de erro inline (erros de negócio, ex: senha errada) -->
+<div class="container mt-3" th:if="${mensagemErro}">
+    <div class="alert alert-danger alert-dismissible fade show">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <span th:text="${mensagemErro}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+</div>
+
+<main class="container my-4 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="d-flex align-items-center mb-4">
+                <a th:href="@{/dashboard}" class="btn btn-outline-secondary btn-sm me-3">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <div>
+                    <h1 class="h3 fw-bold mb-0">
+                        <i class="bi bi-person-gear me-2 text-primary"></i>Meu Perfil
+                    </h1>
+                    <p class="text-muted mb-0">Atualize suas informações pessoais</p>
+                </div>
+            </div>
+
+            <!-- Card com info atual -->
+            <div class="card border-0 shadow-sm mb-4 bg-primary-subtle">
+                <div class="card-body d-flex align-items-center gap-3 py-3 px-4">
+                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
+                         style="width:50px;height:50px;flex-shrink:0">
+                        <i class="bi bi-person-fill text-white fs-4"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold" th:text="${usuario.nome}">Nome</div>
+                        <div class="text-muted small">
+                            <span th:text="${usuario.username}"></span>
+                            <span th:if="${usuario.role == 'ADMIN'}"
+                                  class="badge bg-danger ms-2">ADMIN</span>
+                            <span th:unless="${usuario.role == 'ADMIN'}"
+                                  class="badge bg-secondary ms-2">USER</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulário de perfil -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form th:action="@{/perfil}"
+                          th:object="${perfilDTO}"
+                          method="post"
+                          novalidate>
+
+                        <h6 class="fw-bold text-muted mb-3">
+                            <i class="bi bi-info-circle me-1"></i>Dados Pessoais
+                        </h6>
+
+                        <!-- Nome -->
+                        <div class="mb-3">
+                            <label for="nome" class="form-label fw-semibold">Nome</label>
+                            <input type="text"
+                                   id="nome"
+                                   th:field="*{nome}"
+                                   th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid' : ''"
+                                   class="form-control"
+                                   maxlength="100"/>
+                            <div class="invalid-feedback" th:errors="*{nome}"></div>
+                        </div>
+
+                        <!-- E-mail -->
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold">E-mail</label>
+                            <input type="email"
+                                   id="email"
+                                   th:field="*{email}"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                                   class="form-control"
+                                   placeholder="seu@email.com"
+                                   maxlength="150"/>
+                            <div class="invalid-feedback" th:errors="*{email}"></div>
+                        </div>
+
+                        <hr class="my-4"/>
+
+                        <h6 class="fw-bold text-muted mb-1">
+                            <i class="bi bi-lock me-1"></i>Trocar Senha
+                            <span class="badge bg-secondary fw-normal ms-1">Opcional</span>
+                        </h6>
+                        <p class="text-muted small mb-3">
+                            Preencha apenas se quiser alterar a senha. Após a troca você será redirecionado para o login.
+                        </p>
+
+                        <!-- Senha atual -->
+                        <div class="mb-3">
+                            <label for="senhaAtual" class="form-label fw-semibold">Senha Atual</label>
+                            <input type="password"
+                                   id="senhaAtual"
+                                   th:field="*{senhaAtual}"
+                                   class="form-control"
+                                   autocomplete="current-password"
+                                   placeholder="••••••"/>
+                        </div>
+
+                        <!-- Nova senha / confirmação -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <label for="novaSenha" class="form-label fw-semibold">Nova Senha</label>
+                                <input type="password"
+                                       id="novaSenha"
+                                       th:field="*{novaSenha}"
+                                       th:classappend="${#fields.hasErrors('novaSenha')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       autocomplete="new-password"
+                                       placeholder="Mín. 6 caracteres"/>
+                                <div class="invalid-feedback" th:errors="*{novaSenha}"></div>
+                            </div>
+                            <div class="col-6">
+                                <label for="confirmacaoSenha" class="form-label fw-semibold">Confirmar</label>
+                                <input type="password"
+                                       id="confirmacaoSenha"
+                                       th:field="*{confirmacaoSenha}"
+                                       class="form-control"
+                                       autocomplete="new-password"
+                                       placeholder="Repita a nova senha"/>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="bi bi-save me-1"></i>Salvar Alterações
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout/base :: footer}"></footer>
+<script th:replace="~{layout/base :: scripts}"></script>
+</body>
+</html>
