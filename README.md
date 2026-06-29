@@ -17,7 +17,6 @@
 8. [Estrutura de Pastas](#8-estrutura-de-pastas)
 9. [Usuários de Acesso](#9-usuários-de-acesso)
 10. [Funcionalidades e Exemplos de Uso](#10-funcionalidades-e-exemplos-de-uso)
-11. [Limitações Conhecidas](#11-limitações-conhecidas)
 
 ---
 
@@ -204,11 +203,3 @@ reserva-salas/
 4. Clique em **"Cadastrar Sala"**
 
 ---
-
-## 11. Limitações Conhecidas
-
-- **Autenticação em memória**: os usuários são pré-configurados em `SecurityConfig.java`. Em produção, deve ser substituído por autenticação com banco de dados.
-- **Sem paginação**: a listagem de reservas não é paginada. Com grande volume, pode ser lenta.
-- **Sem e-mail de notificação**: não há envio de e-mail ao aprovar/rejeitar reservas.
-- **Sem recuperação de senha**: não há fluxo de redefinição de senha.
-- **Sem perfil de usuário**: não é possível alterar nome ou senha pelo sistema.
